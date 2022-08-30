@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using System.Net;
 using System.Net.NetworkInformation;
 
 namespace NetworkMonitor
@@ -80,6 +81,11 @@ namespace NetworkMonitor
                     var address = ping.Value;
                     DoTest(settings, targetTime, nameof(ping), ping.Key, () => TestPing(address));
                 }
+                foreach (var dns in settings.Dns ?? new Dictionary<string, string>())
+                {
+                    var address = dns.Value;
+                    DoTest(settings, targetTime, nameof(dns), dns.Key, () => TestPing(address));
+                }
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
         }
@@ -131,6 +137,11 @@ namespace NetworkMonitor
             var ping = new Ping();
             ping.Send(address);
             await ping.SendPingAsync(address);
+        }
+
+        protected async Task TestDns(string address)
+        {
+            await Dns.GetHostAddressesAsync(address);
         }
     }
 }

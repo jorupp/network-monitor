@@ -15,5 +15,6 @@ namespace NetworkMonitor
         public string MachineName { get; set; } = "machine-name";
         public Dictionary<string, string> Http { get; set; }
         public Dictionary<string, string> Ping { get; set; }
+        public Dictionary<string, string> Dns { get; set; }
     }
 }
