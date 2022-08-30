@@ -73,18 +73,18 @@ namespace NetworkMonitor
                 foreach (var http in settings.Http ?? new Dictionary<string, string>())
                 {
                     var url = http.Value;
-                    DoTest(settings, targetTime, http.Key, () => TestHttp(url));
+                    DoTest(settings, targetTime, nameof(http), http.Key, () => TestHttp(url));
                 }
                 foreach (var ping in settings.Ping ?? new Dictionary<string, string>())
                 {
                     var address = ping.Value;
-                    DoTest(settings, targetTime, ping.Key, () => TestPing(address));
+                    DoTest(settings, targetTime, nameof(ping), ping.Key, () => TestPing(address));
                 }
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             }
         }
 
-        protected async Task DoTest(Settings settings, DateTime targetTime, string testName, Func<Task> test)
+        protected async Task DoTest(Settings settings, DateTime targetTime, string testType, string testName, Func<Task> test)
         {
             var sw = Stopwatch.StartNew();
             var success = false;
@@ -102,6 +102,7 @@ namespace NetworkMonitor
             {
                 {  nameof(settings.MachineName), settings.MachineName },
                 {  nameof(testName), testName },
+                {  nameof(testType), testType },
                 {  nameof(targetTime), targetTime.ToString("O") },
             }, new Dictionary<string, double>
             {
