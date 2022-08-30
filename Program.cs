@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace NetworkMonitor
@@ -8,12 +10,9 @@ namespace NetworkMonitor
         static void Main(string[] args)
         {
             IHost host = Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(builder =>
-                {
-
-                })
                 .ConfigureServices((builder, services) =>
                 {
+                    services.AddApplicationInsightsTelemetryWorkerService();
                     services.AddOptions<Settings>().Bind(builder.Configuration.GetSection(Settings.Section));
                     services.AddHostedService<NetworkMonitorService>();
                 })
