@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NetworkMonitor": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
