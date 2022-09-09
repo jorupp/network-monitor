@@ -101,7 +101,14 @@ namespace NetworkMonitor
             }
             catch(Exception ex)
             {
-                Logger.LogError(ex, $"Unable to run test {testName}");
+                Logger.LogError(ex, $"Unable to run test {testType} {testName}");
+            }
+
+            var duration = sw.Elapsed;
+            if (duration > settings.WarningThreshold)
+            {
+                Logger.LogWarning($"{testType} {testName} Exceeded threshold: {duration}");
+
             }
 
             TelemetryClient.TrackEvent(settings.EventName, new Dictionary<string, string>
@@ -112,7 +119,7 @@ namespace NetworkMonitor
                 {  nameof(targetTime), targetTime.ToString("O") },
             }, new Dictionary<string, double>
             {
-                { "duration", sw.ElapsedMilliseconds },
+                { "duration", duration.TotalMilliseconds },
                 { "success", success ? 1 : 0 },
             });
         }
