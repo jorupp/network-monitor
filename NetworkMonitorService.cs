@@ -1,4 +1,4 @@
-using Microsoft.ApplicationInsights;
+﻿using Microsoft.ApplicationInsights;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -40,7 +40,7 @@ namespace NetworkMonitor
                 if (toWait > settings.TimeAllowedEarly)
                 {
                     this.Logger.LogDebug($"Waiting {toWait}.");
-                    await Task.Delay(toWait);
+                    await Task.Delay(toWait, stoppingToken);
                 }
                 else if (toWait.TotalMilliseconds > 0)
                 {
