@@ -1,4 +1,4 @@
-﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -107,7 +107,7 @@ namespace NetworkMonitor
             var duration = sw.Elapsed;
             if (duration > settings.WarningThreshold)
             {
-                Logger.LogWarning($"{testType} {testName} Exceeded threshold: {duration}");
+                Logger.LogWarning($"{testType} {testName} targeted for {targetTime} exceeded threshold: {duration}");
 
             }
 
