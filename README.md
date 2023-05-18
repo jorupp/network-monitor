@@ -52,3 +52,17 @@ customEvents
 | summarize avg(duration) by machineName, bin(targetTime, 5s)
 | render timechart 
 ```
+
+```
+customEvents
+| where timestamp > ago(1h)
+| where name == 'network-monitor'
+| extend targetTime = todatetime(customDimensions['targetTime'])
+| extend machineName = tostring(customDimensions['MachineName'])
+| extend testName = tostring(customDimensions['testName'])
+| extend testType = tostring(customDimensions['testType'])
+| extend duration = toint(customMeasurements['duration'])
+| where machineName in ('rupp-laptop', 'rupp-new-desktop')
+| summarize avg(min_of(duration, 1000)) by machineName, bin(targetTime, 5s)
+| render scatterchart
+```
